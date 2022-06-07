@@ -8,18 +8,19 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
 @Post()
-addUser(
+async addUser(
     @Body('username') userName: string, 
-    @Body('password') userPass: string ): any {
-    const generatedId = this.usersService.insertUser(
+    @Body('password') userPass: string ) {
+    const generatedId = await this.usersService.insertUser(
         userName, 
         userPass
         );
      return {id: generatedId};
 }
 @Get()
-getAllUsers(){
-    return this.usersService.getUsers();
+async getAllUsers(){
+    const user = await this.usersService.getUsers();
+    return user;
 }
 
 @Get(':id')
@@ -41,4 +42,4 @@ removeUser(@Param('id') userId: string){
    return this.usersService.deleteUser(userId);
  
 }
-} 
+}

@@ -1,11 +1,13 @@
-export class User {
+import * as mongoose from 'mongoose';
+
+export const userSchema = new mongoose.Schema({
+username: {type: String, required: true},
+password: {type: String, require: true}
+});
+
+
+export interface User {
     id: string;
     username: string;
     password: string;
-    
-    constructor(id: string, username: string, pass: string) {
-        this.id = id;
-        this.username = username;
-        this.password = pass;
-    };
 } 
