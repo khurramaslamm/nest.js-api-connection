@@ -24,31 +24,32 @@ export class UsersService {
 
     async getSingleUsers(userId: string){
         const user = await this.findUser(userId);
-        return user;
+        return {id: user.id, username: user.username, password: user.password};
     }
 
-    updateUser(userId: string, username: string, pass: string){
-        // const [user, index] = this.findUser(userId);
-        // const updatedUser = {...user}; 
-        // if(username){
-        //     updatedUser.username = username
-        // }
-        // if(pass){
-        //     updatedUser.password = pass;
-        // }
-        // this.users[index] = updatedUser;
+    async updateUser(userId: string, username: string, pass: string){
+        const updatedUser = await this.findUser(userId); 
+        if(username){
+            updatedUser.username = username
+        }
+        if(pass){
+            updatedUser.password = pass;
+        }
+        updatedUser.save();
     }
 
-    deleteUser(userId: string){
-        const index = this.findUser(userId)[1];
-        const updatedList = this.users.splice(index, 1);
-         return updatedList;
+    async deleteUser(userId: string){
+       const result = await this.userModel.deleteOne({_id: userId}).exec();
+       if(result.deletedCount===0){
+        throw new NotFoundException('Cant Find the User'); 
+       }
+       
     }
 
-    private async findUser(userId: string): Promise<User>{
+    private async findUser(userId: string){
         let user;
         try{
-            user = await this.userModel.findById(userId);
+            user = await this.userModel.findById(userId).exec();
         }
         catch(error){
             throw new NotFoundException('Cant Find the User'); 
@@ -58,7 +59,7 @@ export class UsersService {
             throw new NotFoundException('Cant Find the User'); 
         }
 
-        return {id: user.id, username: user.username, password: user.password};
+        return user;
     }
 }
 

@@ -6,7 +6,7 @@ password: {type: String, require: true}
 });
 
 
-export interface User {
+export interface User extends mongoose.Document {
     id: string;
     username: string;
     password: string;

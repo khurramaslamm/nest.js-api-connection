@@ -28,18 +28,18 @@ getUsers(@Param('id') userId: string){
  return this.usersService.getSingleUsers(userId);
 }
 @Patch(':id')
-updateUser(
+async updateUser(
 @Param('id') userId: string, 
 @Body('username') userName: string, 
 @Body('password') userPass: string
 ){
 
-this.usersService.updateUser(userId, userName, userPass);
+await this.usersService.updateUser(userId, userName, userPass);
 return null;
 }
 @Delete(':id')
-removeUser(@Param('id') userId: string){
-   return this.usersService.deleteUser(userId);
+async removeUser(@Param('id') userId: string){
+   return await this.usersService.deleteUser(userId);
  
 }
 }
